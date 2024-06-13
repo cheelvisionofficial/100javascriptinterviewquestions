@@ -1,0 +1,30 @@
+<script>
+  // clearAllInterval
+
+  window.intervalIds = [];
+
+  const originalSetInterval = window.setInterval;
+
+  window.setInterval = function (fn, delay) {
+    const id = originalSetInterval(fn, delay);
+    window.intervalIds.push(id);
+    return id;
+  };
+
+  window.clearAllInterval = function () {
+    while (intervalIds.length) {
+      clearInterval(intervalIds.pop());
+    }
+  };
+
+  setInterval(() => {
+    console.log("hey");
+  }, 1000);
+  setInterval(() => {
+    console.log("hello");
+  }, 1000);
+
+  setTimeout(() => {
+    clearAllInterval();
+  }, 5000);
+</script>

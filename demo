@@ -1,0 +1,4 @@
+Date.now() returns the current timestamp.
+lastRan is the timestamp of the last execution of the throttled function.
+Date.now() - lastRan calculates the time elapsed since the last execution.
+limit - (Date.now() - lastRan) gives the remaining time until the limit period is completed.

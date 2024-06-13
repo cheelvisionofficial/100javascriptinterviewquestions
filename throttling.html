@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Throttling Example</title>
+  </head>
+  <body>
+    <h1>Open the console and resize the window to see the throttled log.</h1>
+
+    <script>
+      // Throttle function definition
+      function throttle(func, limit) {
+        let lastFunc;
+        let lastRan;
+        return function () {
+          const context = this;
+          const args = arguments;
+          if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+          } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function () {
+              if (Date.now() - lastRan >= limit) {
+                func.apply(context, args);
+                lastRan = Date.now();
+              }
+            }, limit - (Date.now() - lastRan));
+          }
+        };
+      }
+
+      // Function to be throttled
+      function logTime() {
+        console.log(new Date().toLocaleTimeString());
+      }
+
+      // Create throttled version of the logTime function
+      const throttledLogTime = throttle(logTime, 4000);
+
+      // Attach throttled function to the resize event
+      window.addEventListener("resize", throttledLogTime);
+    </script>
+  </body>
+</html>
