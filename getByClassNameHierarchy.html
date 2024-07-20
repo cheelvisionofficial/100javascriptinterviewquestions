@@ -1,0 +1,31 @@
+<div class="a" id="a-1">
+  <div class="b" id="b-1">
+    <div class="c" id="c-1"></div>
+    <div class="c" id="c-2"></div>
+  </div>
+  <div class="c" id="c-3"></div>
+</div>
+
+<script>
+  // [a,b,c] >
+  function getByClassNameHierarchy(path) {
+    const classNames = path.split(">");
+    let elements = [document];
+
+    classNames.forEach((className) => {
+      const nextElements = [];
+      // ['a-div']
+      elements.forEach((element) => {
+        const foundElements = element.getElementsByClassName(className);
+        nextElements.push(...foundElements);
+      });
+      elements = nextElements;
+    });
+
+    return elements;
+  }
+
+  // Usage Example:
+  const result = getByClassNameHierarchy("a>c");
+  console.log(result); // This will log an array of elements with class 'c' within the specified hierarchy.
+</script>
