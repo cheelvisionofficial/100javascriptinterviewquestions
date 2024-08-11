@@ -1,0 +1,36 @@
+<script>
+  window.myLocalStorage = {
+    getItem(key) {
+      let result = JSON.parse(window.localStorage.getItem(key));
+
+      if (result) {
+        if (result.expiryTime <= Date.now()) {
+          window.localStorage.removeItem(key);
+          return null;
+        }
+        return result.data;
+      } else {
+        return null;
+      }
+    },
+
+    setItem(key, value, maxAge = 30 * 60 * 60 * 1000) {
+      let result = {
+        data: value,
+      };
+
+      if (maxAge) {
+        result.expiryTime = Date.now() + maxAge;
+      }
+
+      window.localStorage.setItem(key, JSON.stringify(result));
+    },
+  };
+
+  myLocalStorage.setItem("foo", "bar", 2000);
+
+  setTimeout(function () {
+    console.log(myLocalStorage.getItem("foo"));
+  }, 2000);
+</script>
+<!-- 3+2days = 5 -->
